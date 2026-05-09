@@ -17,15 +17,27 @@ Full-stack web application built with a modern frontend and backend architecture
 
 - **NestJS** — Progressive Node.js framework
 - **TypeScript** — Type-safe development
-- **ORM** — Default ORM with dual SQL support
-  - **SQLite** — Default database (zero-config, file-based)
+- **TypeORM** — ORM with dual SQL support
+  - **SQLite** — Default database (zero-config, file-based, uses better-sqlite3)
   - **PostgreSQL** — Production-ready relational database
+- **Passport + JWT** — Stateless authentication
+- **class-validator** — Request DTO validation
 
 ## Project Structure
 
 ```
 zone-type/
 ├── backend/            # NestJS API server
+│   ├── src/
+│   │   ├── auth/       # Auth module (register, login, JWT)
+│   │   │   ├── dto/    # Request DTOs
+│   │   │   ├── guards/ # JWT auth guard
+│   │   │   ├── strategies/ # Passport strategies
+│   │   │   └── decorators/ # Custom decorators
+│   │   ├── users/      # Users module (entity, service)
+│   │   ├── common/      # Shared utilities (filters, etc.)
+│   │   ├── app.module.ts
+│   │   └── main.ts
 │   └── ...
 ├── frontend/           # Vue 3.5 SPA
 │   ├── src/
@@ -121,6 +133,7 @@ VITE_API_BASE_URL=http://localhost:3000
 ```env
 # Database
 DB_TYPE=sqlite
+DB_DATABASE=zone-type.sqlite
 # For PostgreSQL:
 # DB_TYPE=postgres
 # DB_HOST=localhost
@@ -131,7 +144,21 @@ DB_TYPE=sqlite
 
 # Application
 PORT=3000
+
+# Auth
+JWT_SECRET=change-me-in-production
+JWT_EXPIRATION=1d
 ```
+
+## API Endpoints
+
+All backend endpoints are prefixed with `/api`.
+
+| Method | Path                    | Description                      |
+| ------ | ----------------------- | -------------------------------- |
+| POST   | `/api/auth/register`    | Register a new user              |
+| POST   | `/api/auth/login`       | Login and receive a JWT token    |
+| GET    | `/api/auth/me`          | Get current user profile (JWT)   |
 
 ## Theme Customization
 
