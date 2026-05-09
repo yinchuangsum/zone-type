@@ -43,3 +43,8 @@ import { type Bar } from './bar'
 ## Env
 
 `VITE_API_BASE_URL` — backend URL (default `http://localhost:3000`). Accessed via `import.meta.env.VITE_API_BASE_URL`. Create `.env` manually (no `.env.example` in this directory).
+
+## WPM / Typing analytics
+
+- `useTypingGame` — real-time game state; WPM is a `computed()` that updates every keystroke: `correctChars / 5 / elapsedMinutes`.
+- `useTypingAnalytics` — session-wide per-key stats, bigram/trigram timings, and throttled WPM. Uses `useIntervalFn` from VueUse (500ms interval). `rawWpm = keystrokes / 5 / minutes`, `netWpm = max(0, rawWpm - (uncorrectedErrors / minutes))` — penalizes errors.
